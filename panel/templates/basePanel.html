@@ -1,0 +1,77 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% block meta %}
+    {% endblock meta %}
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datepicker/0.6.5/datepicker.min.css" integrity="sha256-b88RdwbRJEzRx95nCuuva+hO5ExvXXnpX+78h8DjyOE=" crossorigin="anonymous" />
+    <link rel="stylesheet"  href="{% static 'css/main.css'%}">
+    <link rel="stylesheet"  href="{% static 'css/plugins.css'%}">
+    <title>Szkolenie</title>
+</head>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0">
+    {{ form.media }}
+
+
+
+<body class="PanelbaseBackground">
+    <nav >
+        <div class="hamburger">
+            <div class="line"></div>
+            <div class="line"></div>
+            <div class="line"></div>
+        </div >
+        <div class="right-topbar">
+            <ul class="content-topbar">
+                {% block nav %}
+                {% endblock nav %}
+            
+                <a  class="right-topbar-item" title="artur_strzelczyk@wp.pl" target="_self" href="mailto:artur_strzelczyk@wp.pl">artur_strzelczyk@wp.pl</a>
+                {% if request.user.is_authenticated %}
+                    <a class="right-topbar-item " href="{% url 'logout_view' %}">Logout</a>
+                    <div class="right-topbar-item ">{{user.username}}</div>
+                {% else %}
+                    <a class="right-topbar-item " href="{% url 'login_view' %}">Login</a>
+                {% endif %}
+            
+            </ul>
+        </div>
+    </nav>
+
+    
+
+    {% block content %}
+
+    {% endblock content %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.23.0/moment.min.js" integrity="sha256-VBLiveTKyUZMEzJd6z2mhfxIqz3ZATCuVMawPZGzIfA=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/datepicker/0.6.5/datepicker.min.js" integrity="sha256-/7FLTdzP6CfC1VBAj/rsp3Rinuuu9leMRGd354hvk0k=" crossorigin="anonymous"></script>
+</head>
+<body>
+
+
+</body>
+</html>
+
+    <script>
+        const hamburger = document.querySelector(".hamburger");
+        const content_topbar = document.querySelector(".content-topbar");
+        const links = document.querySelectorAll(".content-topbar a");
+
+        hamburger.addEventListener("click", () => {
+        content_topbar.classList.toggle("open");
+        links.forEach(link => {
+            link.classList.toggle("fade");
+        });
+        });
+    
+    </script>
+    {% block extra_js %}
+    {% endblock extra_js %}
+</body>
+</html>

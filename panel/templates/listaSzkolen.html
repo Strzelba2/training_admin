@@ -1,0 +1,162 @@
+{% extends 'panel.html' %}
+{% load static %}
+
+{% block panel %}
+<div class="table-responsive">
+        <table id="" class="table table-vcenter table-condensed table-bordered">
+            <thead>
+                <tr>
+                    <th class="text-center">
+                        <input type="checkbox">
+                    </th>
+                    <th class="text-center">
+                        <div class="table-filter">
+
+                            <form action="." method="GET" >
+                                {% csrf_token %}
+                                <span>Nazwa szkolenia</span> 
+                                
+                                <input type="text" name="orderlist" value="{{actual_ordering.0}}"  style="display:None;">
+                                <button type="submit" class="orderlist_title"  ><i class="{{class_sort.0}}"></i>  </button>
+                        
+                            </form> 
+                        </div>
+                    </th>
+                    <th class="text-center">
+                        <div class="table-filter">
+                                
+                            <form action="." method="GET" >
+                                {% csrf_token %}
+                                <span>Termin szkolenia</span> 
+                                
+                                <input type="text" name="orderlist" value="{{actual_ordering.1}}"  style="display:None;">
+                                <button type="submit" class="orderlist_title"  ><i class="{{class_sort.1}}"></i>  </button>
+                        
+                            </form> 
+                        </div>
+                    
+                    </th>
+                    <th class="text-center">
+                        <div class="table-filter">
+                                
+                            <form action="." method="GET" >
+                                {% csrf_token %}
+                                <span>Prowadzący</span> 
+                                
+                                <input type="text" name="orderlist" value="{{actual_ordering.2}}"  style="display:None;">
+                                <button type="submit" class="orderlist_title" ><i class="{{class_sort.}}"></i>  </button>
+                        
+                            </form> 
+                        </div>
+                    </th>
+                    <th class="text-center">Max. ilość uczestników</th>
+
+                    <th class="text-center">edytuj</th>
+                    {% if archiwum  %}
+                        <th class="text-center">archiwum</th>
+                    {% endif %}
+                </tr>
+            </thead>
+            
+            <tbody>
+                <form id="form-szkolenie" method="post" enctype="multipart/form-data" class="form-horizontal form-bordered" >
+                {% csrf_token %}
+                {% for i in lista_szkolen %}
+                <tr>
+                    <td class="text-center"><input type="checkbox"  name="check{{i.pk}}" id="check{{i.pk}}"></td>
+
+                    <td class="text-center" name = "editszkolenie" data-url="{% url 'update_szkolenie_view' pk=i.pk username=user.username szkolenie="szkolenie" %}">{{i.NewTraining}}</td>
+                    <td class="text-center" name = "editszkolenie" data-url="{% url 'update_szkolenie_view' pk=i.pk username=user.username szkolenie="szkolenie" %}">{{i.DateTraining}}</td>
+                    <td class="text-center" name = "editszkolenie" data-url="{% url 'update_szkolenie_view' pk=i.pk username=user.username szkolenie="szkolenie" %}">{{i.Provider}}</td>
+                    <td class="text-center" name = "editszkolenie" data-url="{% url 'update_szkolenie_view' pk=i.pk username=user.username szkolenie="szkolenie" %}">{{i.max_participants}}</td>
+                    <td class="text-center">
+                        <div class="btn-group">
+                            <a href="{% url 'update_szkolenie_view' pk=i.pk username=user.username szkolenie="szkolenie" %}"  data-toggle="tooltip" title="Edit" class="btn btn-xs btn-default"><i class="fa fa-pencil">Edit</i></a>
+                            
+                        </div>
+                    </td>
+                    {% if archiwum  %}
+                    
+                        <td class="text-center"><input type="checkbox"  name="archiwum{{i.pk}}" id="archiwum{{i.pk}}"></td>
+                    {% endif %}
+                    
+                </tr>
+                {% endfor %}
+         
+                
+            <tbody>
+            
+        </table>
+        <div class="button-view">
+            
+            <button data-url={% url 'delete_szkolenie_view'  username=user.username szkolenie="szkolenie" %} id="delete-button-szkolenie" class="btn btn-sm btn-primary"><i class="fa fa-angle-right"></i> DELETE </button>
+            {% if archiwum  %}
+                <button  data-url={% url 'archiwum_Szkolenie'  username=user.username szkolenie="szkolenie" %} id="archiwum-button"  class="btn btn-sm btn-primary" ><i class="fa fa-angle-right"></i> Archiwum </button>
+            {% endif %}
+        <button type="submit" id="hidden-button-szkolenie" style="display:None" > </button> 
+        </div>  
+        </form> 
+        
+</div>
+{% endblock panel %}
+{% block java %}
+    <script>
+    $(function() {
+                /* Select/Deselect all checkboxes in tables */
+                $('thead input:checkbox').click(function() {
+                    var checkedStatus   = $(this).prop('checked');
+                    var table           = $(this).closest('table');
+
+                    $('tbody input:checkbox', table).each(function() {
+                        $(this).prop('checked', checkedStatus);
+                    });
+                });
+            });
+
+    </script>
+    <script>
+        $(function() {
+                $('td[name ="editszkolenie"]').dblclick(function() {
+                    var  url = $(this).attr('data-url');
+                    window.location.href = url;
+                });
+            });
+
+        $(function() {
+                    /* Select/Deselect all checkboxes in tables */
+                    $(".orderlist_title").on('click', function() {
+                        var checkedStatus = $('input[name="orderlist"]').val();
+                        var list_order = {'NewTraining':'-NewTraining','DateTraining':'-DateTraining','Provider':'-Provider'};
+                        if(checkedStatus in list_order){
+                            $(this).children('i').removeClass("fa fa-angle-up").addClass("fa fa-angle-down");
+                            
+                        }else {
+                            $(this).children('i').removeClass("fa fa-angle-down").addClass("fa fa-angle-up");
+
+                        }
+                        
+                    });
+                });
+        $(function() {
+                /* Select/Deselect all checkboxes in tables */
+                $("#archiwum-button").on('click', function() {
+                    var  url = $(this).attr('data-url');
+                    $("#form-szkolenie").attr("action", url);
+                    $("#hidden-button-szkolenie").click();
+                    
+                });
+                $("#delete-button-szkolenie").on('click', function() {
+                    var  url = $(this).attr('data-url');
+                    $("#form-szkolenie").attr("action", url);
+                    $("#hidden-button-szkolenie").click();
+                    
+                });
+            });
+        </script>
+        
+  
+    	
+
+ 
+
+{% endblock java %}

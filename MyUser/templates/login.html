@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    
+    <div id="login-background">
+    <img src={% static 'img/library.jpg' %} alt="Login Full Background" class="full-bg animation-pulseSlow">
+    </div>
+    <div id="login-container" class="animation-fadeIn">
+        <!-- Login Title -->
+        <div class="login-title text-center">
+            <h1> Zaloguj się</h1>
+            
+        </div>
+        <div class="block push-bit">
+            <form method="POST" action='.' id="form-login" class="form-horizontal form-bordered form-control-borderless" >
+                {% csrf_token %}
+                <div class="container" style="margin-left: 2%;margin-top: 3%">
+                    {{form.non_field_errors}}
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-12">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="gi gi-envelope"></i></span>
+                            
+                            {{form.query}}
+                            {{form.query.errors}}
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-12">
+                        <div class="input-group">
+                        
+                            <span class="input-group-addon"><i class="gi gi-lock"></i></span>
+                            {{form.password}}
+                            {{form.password.errors}}
+                        </div>
+                    </div>
+                </div>
+                 <div class="form-group form-actions">
+
+                        <div class="col-xs-12 text-center">
+                            <button id="login_b" type="submit" class="btn btn-sm btn-primary"><i class="fa fa-angle-right"></i> Zaloguj się</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-12 text-center">
+                            <a href="{% url 'register' %}" id="link-register-login"><small>Zarejestruj się</small></a>
+                        </div>
+                    </div>
+                    
+            </form>
+        </div>
+        <div>
+            <footer class="text-muted text-center">
+                <small><span id="year-copy">2020-05</span> © <a href="" target="_blank">SIMPLY Edyta Strzelczyk</a></small>
+            </footer>
+        </div>
+    </div>
+{% endblock %}

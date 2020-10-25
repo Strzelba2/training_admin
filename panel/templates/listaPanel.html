@@ -1,0 +1,161 @@
+{% extends 'panel.html' %}
+{% load my_form_tag %} 
+{% load static %}
+
+{% block panel %}
+<div class="training-container" id="anime-block">
+    <h1>Wybierz szkolenie</h1>
+    
+    
+        <select id="choose-szkolenie" onchange="if (this.value) window.location.href= $(':selected',this).attr('href')" > 
+        <option selected="selected" disabled>wybierz szkolenie:</option>
+        {% for szkolenie in data_training %}
+            {% if szkolenie in archiwum %}
+                <option href={% url 'ListaSzkolenUsersView' username=user.username  szkolenie=szkolenie.NewTraining %} value="{{szkolenie.NewTraining}}">{{szkolenie.NewTraining}}</option>
+            {% else %}
+                <option style="color:grey" href={% url 'ListaSzkolenUsersView' username=user.username  szkolenie=szkolenie.NewTraining %} value="{{szkolenie.NewTraining}}">{{szkolenie.NewTraining}}</option>
+            {% endif %}
+        {% endfor %}
+    </select>
+   
+    
+
+</div>
+<div class="table-responsive">
+        <table id="" class="table table-vcenter table-condensed table-bordered">
+            <thead>
+                <tr>
+                    <th class="text-center">
+                        <input type="checkbox">
+                    </th>
+                    <th class="text-center">
+                        <div class="table-filter">
+
+                                <span>Szkolenie</span> 
+
+                        </div>
+                    </th>
+                    <th class="text-center">
+                        <div class="table-filter">
+                            <span>Imię</span> 
+                        </div>
+                    </th>
+                    <th class="text-center">
+                        <div class="table-filter">
+                                <span>Nazwisko</span> 
+                        </div>
+                    
+                    </th>
+                    <th class="text-center">
+                        <div class="table-filter">
+
+                                <span>Email</span> 
+
+                        </div>
+                    </th>
+                    <th class="text-center"> Numer telefonu</th>
+
+                    <th class="text-center">Miasto</th>
+                    <th class="text-center">Nazwa firmy</th>
+                    <th class="text-center">Email wysłany</th>
+                    <th class="text-center">Edytuj</th>
+                </tr>
+            </thead>
+            
+            <tbody>
+                <form action="." method="post" enctype="multipart/form-data" class="form-horizontal form-bordered" >
+                {% csrf_token %}
+                {% for i in listaPanel %}
+                <tr>
+                    <td class="text-center"><input type="checkbox"  name="check{{i.pk}}" id="check{{i.pk}}"></td>
+
+                    <td class="text-center" name = "editszkolenie" >{{i.NewTraining}}</td>
+                    <td class="text-center" name = "editszkolenie" >{{i.name_user}}</td>
+                    <td class="text-center" name = "editszkolenie" >{{i.subname}}</td>
+                    <td class="text-center" name = "editszkolenie" >{{i.email_user}}</td>
+                    <td class="text-center" name = "editszkolenie" >{{i.phoneNumber}}</td>
+                    <td class="text-center" name = "editszkolenie" >{{i.city}}</td>
+                    <td class="text-center" name = "editszkolenie" >{{i.name_company}}</td>
+                    <td class="text-center">
+
+                    {% for mes in send %}
+                        {% ifequal i mes.neme_user_send%}
+                           <p style="margin-bottom:0;background-color:green;color:white"> {{mes.name_message_send}}</p>
+                           
+                        {% endifequal %}
+
+
+                        
+                    {% endfor %}
+
+                    </td>
+                    <td class="text-center">
+                        <div class="btn-group">
+                             <a href="{% url 'update_szkolenie_users' pk=i.pk username=user.username szkolenie=szkolenie_cont %}"  data-toggle="tooltip" title="Edit" class="btn btn-xs btn-default"><i class="fa fa-pencil">Edit</i></a>
+                            
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+         
+                
+            <tbody>
+            
+        </table>
+            <div class='button-view'>
+                <button  data-url={% url 'delete_Userszkolenie'  username=user.username  szkolenie=szkolenie_cont %} id="delete-button" class="btn btn-sm btn-primary"><i class="fa fa-angle-right"></i> DELETE </button>
+                <button  data-url={% url 'convert_to_CSV'  username=user.username  szkolenie=szkolenie_cont %} id="CSV_button" class="btn btn-sm btn-primary"><i class="fa fa-angle-right"></i> Convert CSV </button>
+                <select class="btn btn-sm btn-primary" id="Email-button" > 
+                <option selected="selected" disabled>Wyślij Emaila:</option>
+                {% for mes in message %}
+                    <option data-url={% url 'sent_email_users'  username=user.username  szkolenie=szkolenie_cont message=mes  %}  value="{{mes}}">{{mes}}</option>
+                {% endfor %}
+                
+                </select>
+                <button type="submit" id="hidden-button" style="display:None" ></i>  </button>
+                
+            </div>
+        </form> 
+        
+</div>
+
+{% endblock panel %}
+{% block java %}
+<script>
+    $(function() {
+                /* Select/Deselect all checkboxes in tables */
+                $('thead input:checkbox').click(function() {
+                    var checkedStatus   = $(this).prop('checked');
+                    var table           = $(this).closest('table');
+
+                    $('tbody input:checkbox', table).each(function() {
+                        $(this).prop('checked', checkedStatus);
+                    });
+                });
+            });
+
+    
+    $(function() {
+                $("#CSV_button").on('click', function() {
+                    var  url = $(this).attr('data-url');
+                    $("form").attr("action", url);
+                    $("#hidden-button").click();
+
+                    
+                    
+                });
+                $("#delete-button").on('click', function() {
+                    var  url = $(this).attr('data-url');
+                    $("form").attr("action", url);
+                    $("#hidden-button").click();
+                    
+                });
+                $("#Email-button").change (function() {
+                    var  url = $(':selected',this).attr('data-url');
+                    $("form").attr("action", url);
+                    $("#hidden-button").click();
+                    
+                });
+            });
+</script>
+{% endblock java %}

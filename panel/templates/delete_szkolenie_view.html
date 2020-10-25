@@ -1,0 +1,13 @@
+{% extends 'panel.html' %}
+{% load static %}
+
+{% block panel %}
+
+
+<form action='.' method='POST'>{% csrf_token %}
+    <h1>Czy napewno chcesz usunąć szkolenie z listy szkoleń ?</h1>
+    <p><input type='submit' value='Yes' />  <a href="{% url 'ListaSzkolenView' user.username %}">Cancel</a></p>
+
+</form>
+
+{% endblock panel %}

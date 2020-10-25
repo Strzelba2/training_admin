@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block meta %}
+<meta http-equiv="refresh" content="180" ;url="{% url 'registerNum' usernum %}" >
+{% endblock meta %}
+
+
+{% block content %}
+    <div id="login-background">
+    <img src={% static 'img/library.jpg' %} alt="Login Full Background" class="full-bg animation-pulseSlow">
+    </div>
+    <div id="login-container" class="animation-fadeIn">
+        <!-- Login Title -->
+        <div class="login-title text-center">
+            <h1> Wpisz numer</h1>
+        </div>
+        <div class="block push-bit">
+            <form action="{% url 'registerNum' usernum %}" method="post" enctype="multipart/form-data"  >
+                {% csrf_token %}
+
+                {{form.RandomNUM}}
+
+                <div class="form-group form-actions">
+                
+                    <div class="col-xs-12 text-center">
+                    </br>
+                        <button id ='clicer' type="submit" class="btn btn-sm btn-primary"><i class="fa fa-angle-right"></i> Zarejestruj się</button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+
+{% endblock %}

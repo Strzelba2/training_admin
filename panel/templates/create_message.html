@@ -1,0 +1,190 @@
+{% extends 'panel.html' %}
+{% load my_form_tag %}
+{% load static %}
+
+{% block panel %}
+    <form id= "MyForm" action="{% url 'Create_Message' user.username %}" method='POST' enctype="multipart/form-data">{% csrf_token %}
+        <div class="center-create">
+            {{form.name_message}}
+            {{form.name_message.errors}}
+            <input type="file" accept="image/*"  name="inpFileImage0"  id="inpFileImage0" onchange="change_sizeImage(this.files[0]);">
+        </div>
+        <div class="center-create">
+            <div class="date-input" >
+                <div>
+                    <a class="btn_editor" onclick="exexcCmd('bold');"><i class="fa fa-bold"></i></a>
+                    <a class="btn_editor" onclick="exexcCmd('italic');"><i class="fa fa-italic"></i></a>
+                    <a class="btn_editor" onclick="exexcCmd('underline');"><i class="fa fa-underline"></i></a>
+                    <a class="btn_editor" onclick="exexcCmd('strikeThrough');"><i class="fa fa-strikethrough"></i></a>
+                    <a class="btn_editor" onclick="exexcCmd('justifyLeft');"><i class="fa fa-align-left"></i></a>
+                    <a class="btn_editor" onclick="exexcCmd('justifyCenter');"><i class="fa fa-align-center"></i></a>
+                    <a class="btn_editor" onclick="exexcCmd('justifyRight');"><i class="fa fa-align-right"></i></a>
+                    <a class="btn_editor" onclick="exexcCmd('justifyFull');"><i class="fa fa-align-justify"></i></a>
+                    <a class="btn_editor" onclick="exexcCmd('indent');"><i class="fa fa-indent"></i></a>
+                    <a class="btn_editor" onclick="exexcCmd('outdent');"><i class="fa fa-dedent"></i></a>
+                    <a class="btn_editor" onclick="exexcCmd('subscript');"><i class="fa fa-subscript"></i></a>
+                    <a class="btn_editor" onclick="exexcCmd('superscript');"><i class="fa fa-superscript"></i></a>
+                    <a class="btn_editor" onclick="exexcCmd('undo');"><i class="fa fa-undo"></i></a>
+                    <a class="btn_editor" onclick="exexcCmd('redo');"><i class="fa fa-repeat"></i></a>
+                    <a class="btn_editor" onclick="exexcCmd('insertUnorderedList');"><i class="fa fa-list-ol"></i></a>
+                    <a class="btn_editor" onclick="exexcCmd('insertOrderedList');"><i class="fa fa-list-alt"></i></a>
+                    <a class="btn_editor" onclick="exexcCmd('insertParagraph');"><i class="fa fa-paragraph"></i></a>
+                    <select onchange="exexcCmdWith('formatBlock',this.value);" class="btn_editor">
+                        <option value="H1">H1</option>
+                        <option value="H2">H2</option>
+                        <option value="H3">H3</option>
+                        <option value="H4">H4</option>
+                        <option value="H5">H5</option>
+                        <option value="H6">H6</option>
+                    </select>
+                    <a class="btn_editor" onclick="exexcCmd('insertHorizontalRule');">HR</i></a>
+                    <a class="btn_editor" onclick="exexcCmdWith('createLink',prompt('wpisz link','http://'));"><i class="fa fa-link"></i></a>
+                    <a class="btn_editor" onclick="exexcCmd('unlink');"><i class="fa fa-unlink"></i></a>
+                    <a class="btn_editor" onclick="code_source();"><i class="fa fa-code"></i></a>
+                    <select onchange="exexcCmdWith('fontName',this.value);" class="btn_editor">
+                        <option value="Arial" style="font-family: 'Arial'">Arial</option>
+                        <option value="Calibri" style="font-family: 'Calibri'">Calibri</option>
+                        <option value="Centaur" style="font-family: 'Centaur'">Centaur</option>
+                        <option value="Century Gothic" style="font-family: 'Century Gothic'">Century Gothic</option>
+                        <option value="Courier" style="font-family: 'Courier'">Courier</option>
+                        <option value="Times New Roman" style="font-family: 'Times New Roman'">Times New Roman</option>
+                        <option value="Verdana" style="font-family: 'Verdana'">Verdana</option>
+                    </select>
+                    <select onchange="exexcCmdWith('fontSize',this.value);" class="btn_editor">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                    </select>
+                    <input class="btn_editor fa fa-paint-brush" type="color" onchange="exexcCmdWith('hiliteColor',this.value);"></input>
+                    <input class="btn_editor fa fa-quora" type="color" onchange="exexcCmdWith('foreColor',this.value);"></input>
+                    <a class="btn_editor" onclick="inputFILEimage();"><i class="fa fa-file-image-o"></i></a>
+                </div>
+                <iframe  name="richTextField" id="richTextField" style="margin-top:1%;width:100%;height:400px"></iframe>
+                <textarea name="text_message" cols="40" rows="10" style="opacity: 0" required="" id="id_text_message"></textarea>
+                {{form.text_message.errors}}
+                
+            </div>
+        </div>
+
+        <div class ="text-center">
+            <p><input onclick="submessage() ;" id="create_msg" class="btn btn-sm btn-primary "  value='Yes' />  <a href="{% url 'MessageList' user.username %}">Cancel</a></p>
+        </div>
+        <button type="submit" id="hidden-button" style="display:None">  </button>
+
+
+    </form>
+{% endblock panel %}
+{% block java %}
+
+<script type="text/javascript">
+    
+    window.onload = function(){
+        richTextField.document.designMode= 'On';
+    }
+    var  ShowSourceCode = false;
+    function exexcCmd(command){
+        richTextField.document.execCommand(command, false,null);
+    }
+    function exexcCmdWith(command,arg){
+        richTextField.document.execCommand(command, false,arg);
+    }
+    function code_source(){
+        if(ShowSourceCode){
+            richTextField.document.getElementsByTagName("body")[0].innerHTML = richTextField.document.getElementsByTagName("body")[0].textContent;
+            console.log("if");
+            ShowSourceCode = false;
+        }else{
+            console.log("else");
+            richTextField.document.getElementsByTagName("body")[0].textContent = richTextField.document.getElementsByTagName("body")[0].innerHTML;
+            ShowSourceCode = true;
+        }
+    }
+    var idCount=0;
+    function inputFILEimage(){
+        var input = document.getElementById("inpFileImage"+idCount);
+        // add onchange handler if you wish to get the file :)
+        input.click(); // opening dialog      
+    }
+    function change_sizeImage(filename){
+
+
+        var IMAGEurl = window.URL.createObjectURL(filename);
+        var img = document.createElement("img");
+        img.src = IMAGEurl;
+        img.name = filename.name;
+        img.id = "inpFileImage"+idCount;;
+        
+        img.style.width = '100px';
+        img.style.height = '100px';
+        img.style.cursor = 'pointer';
+        
+        img.addEventListener("click",function() { change_size(img.id); } );
+
+        richTextField.document.getElementsByTagName("body")[0].appendChild(img);
+        if(idCount >= 0){
+            
+            var location = document.getElementById("MyForm");
+            
+            var input = document.createElement("input");
+            input.type = "file";
+            idCount += 1
+            input.name = "inpFileImage"+idCount;
+            input.id = "inpFileImage"+idCount;
+            input.setAttribute("onchange","change_sizeImage(this.files[0],);")
+            location.appendChild(input);
+
+        }
+
+    }
+    function change_size(id){
+
+        var id = id;
+        var item = document.getElementById('richTextField').contentWindow.document.getElementById(id);
+        var width= prompt("wstaw szerokość zdjęcia", "100");
+        var height= prompt("wysokość zdjęcia", "100");
+        item.style.width = width+'px';
+        item.style.height = height+'px';
+    }
+    function submessage(){
+        var textmessage = document.getElementById("id_text_message");
+        var hidden_button = document.getElementById("hidden-button");
+        var images_before = [].slice.apply(document.getElementById('richTextField').contentWindow.document.getElementsByTagName("img"), null);
+        var input_to = [].slice.apply(document.getElementsByTagName("input"), null)
+        var list_of_image = []
+        
+        for (var x in images_before){
+                   list_of_image.push(images_before[x].id)
+        }
+        console.log(list_of_image)
+        for (var x in input_to){
+            if(input_to[x].getAttribute("type") == "file") {
+                if(input_to[x].files.length != 0){
+                    if(list_of_image.includes(input_to[x].id)){
+                        console.log("zawiera")
+                    }else{
+                        console.log(input_to[x])
+                        var input_to_remove=input_to[x];
+                        console.log(input_to_remove)
+                        input_to_remove.remove();
+
+                    }
+                }
+            }
+        }
+
+        textmessage.value = richTextField.document.getElementsByTagName("body")[0].innerHTML;
+
+       hidden_button.click();
+    }
+
+    
+    
+    
+ 
+
+</script>
+{% endblock java %}

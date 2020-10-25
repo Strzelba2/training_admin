@@ -1,0 +1,43 @@
+{% extends 'panel.html' %}
+
+{% load static %}
+
+{% block panel %}
+    <form action='.' method='POST'>{% csrf_token %}
+        <div class="center-create">
+            {{form.NewTraining}}
+        
+            {{form.NewTraining.errors}}
+        </div>
+        <div class="center-create">
+            <div class="date-input">
+                {{form.DateTraining }}
+                {{form.DateTraining.errors}}
+                
+            </div>
+        </div>
+        <div class="center-create">
+            {{form.Provider}}
+            {{form.Provider.errors}}
+        </div>
+        <div class="center-create">
+            {{form.max_participants}}
+            {{form.max_participants.errors}}
+        </div>
+        <div class ="text-center"
+            <p><input class="btn btn-sm btn-primary " type='submit' value='Yes' />  <a href="{% url 'ListaSzkolenView' username=user.username szkolenie="szkolenie"%}">Cancel</a></p>
+        </div>
+
+    </form>
+{% endblock panel %}
+{% block java %}
+
+    <script>
+      $(function () {
+        $("#id_DateTraining").datepicker({
+            format:'dd.mm.yyyy',
+        });
+      });
+
+    </script>
+{% endblock java %}

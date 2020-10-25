@@ -1,0 +1,77 @@
+{% extends 'panel.html' %}
+
+{% load static %}
+
+{% block panel %}
+        {{form.NewTraining.errors}}
+        {{form.DateTraining.errors}}
+        {{form.Provider.errors}}
+        {{form.max_participants.errors}}
+    <div class="table-responsive">
+        <table id="" class="table table-vcenter table-condensed table-bordered">
+            <thead>
+                <tr>
+                    <th class="text-center">Nazwa szkolenia</th>
+                    <th class="text-center">Termin szkolenia</th>
+                    <th class="text-center">Prowadzący</th>
+                    <th class="text-center">Max. ilość uczestników</th>
+
+                    <th class="text-center">zapisać zmiany</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in szkolenie_data %}
+                    {% if i.NewTraining == form.NewTraining.value %}
+                        <form action='.' method='POST'>{% csrf_token %}
+                            <tr>
+                                <td class="text-center" >{{form.NewTraining}}</td>
+                                <td class="text-center">{{form.DateTraining }}</td>
+                                <td class="text-center">{{form.Provider}}</td>
+                                <td class="text-center">{{form.max_participants}}</td>
+                                <td class="text-center">
+                                    <div class="btn-group">
+                                        <p><input id = 'accessform' type='submit' value='Tak' />  <a href="{% url 'ListaSzkolenView' username=user.username  szkolenie="szkolenie" %}">Nie</a></p>
+                                        
+                                    </div>
+                                </td>
+                            </tr>
+                    </form>
+                    {% else %}
+                        <tr>
+                            
+                            <td class="text-center" id="{{i.pk}}">{{i.NewTraining}}</td>
+                            <td class="text-center">{{i.DateTraining}}</td>
+                            <td class="text-center">{{i.Provider}}</td>
+                            <td class="text-center">{{i.max_participants}}</td>
+                            <td class="text-center">
+                             
+                            </td>
+                        </tr>
+                    {% endif %}
+
+                {% endfor %}
+            
+            <tbody>
+        </table>
+{% endblock panel %}
+{% block java %}
+    <script>
+      $(function () {
+        $("#id_DateTraining").datepicker({
+            format:'dd.mm.yyyy',
+        });
+      });
+
+    </script>
+    <script>
+        document.querySelector('#accessform').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+            // Cancel the default action, if needed
+            event.preventDefault();
+            // Trigger the button element with a click
+            document.getElementById("#accessform").click();
+            }
+        });
+
+    </script>
+{% endblock java %}

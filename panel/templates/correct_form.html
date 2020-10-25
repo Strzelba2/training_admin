@@ -1,0 +1,24 @@
+{% extends 'basePanel.html' %}
+{% load static %}
+{% block nav %}
+	{% if request.user.is_authenticated %}
+		<a class="right-topbar-item " href="{% url 'Panel' username=user.username%}">Panel</a>
+	{% endif %}
+{% endblock nav %}
+{% block content %}
+<div id="logo-container">
+        <img src="{% static 'img/sbplogo_1.png' %}" >
+</div>
+
+
+
+
+    <div class="training-container" id="anime-block">
+        <label >
+            Dziękujemy pani/panu {{name}} za przystąpienie do szkolenia.
+            W najbliższym czasie przyślemy emaila potwierdzającego
+            na adres : {{email}}
+
+        </label>
+
+{% endblock content %}

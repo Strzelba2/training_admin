@@ -1,0 +1,125 @@
+{% extends 'panel.html' %}
+{% load static %}
+
+
+{% block panel %}
+
+
+<form method="post" action='.' enctype="multipart/form-data" id="form-login" class="form-horizontal form-bordered form-control-borderless" >
+    {% csrf_token %}
+ 
+        {{form.non_field_errors}}
+        
+        <div class="center-create">
+        <label for="">Szkolenie</label>
+                {{form.NewTraining}}
+                {{form.NewTraining.errors}}
+        </div>
+        <div class="center-create">
+            <label for="">Imię</label>
+                    {{form.name_user}}
+                    {{form.name_user.errors}}
+        </div>
+        <div class="center-create">
+        <label for="">Nazwisko</label>
+                    {{form.subname}}
+                    {{form.subname.errors}}
+        </div>
+        <div class="center-create">
+        <label for="">Email</label>
+                    {{form.email_user}}
+                    {{form.email_user.errors}}
+        </div>
+        <div class="center-create">
+        <label for="">Numer telefonu</label>
+                    {{form.phoneNumber}}
+                    {{form.phoneNumber.errors}}
+        </div>
+        <div class="center-create">
+        <label for="">Adras </label>
+                    {{form.adress}}
+                    {{form.adress.errors}}
+        </div>
+        <div class="center-create">
+        <label for="">Faktura </label>
+                    {{form.invoice}}
+                    {{form.invoice.errors}}
+        </div>
+        <div class="training-container" id="HiddenCompany" style="display:none;"><br clear="all">
+            <div class="center-create">
+            <label for="">Nazwa firmy </label>
+                        {{form.name_company}}
+                        {{form.name_company.errors}}
+            </div>
+            <div class="center-create">
+            <label for="">Pełna Nazwa</label>
+                        {{form.full_name_company}}
+                        {{form.full_name_company.errors}}
+            </div>
+            <div class="center-create">
+            <label for="">NIP</label>
+                        {{form.NIP}}
+                        {{form.NIP.errors}}
+            </div>
+            <div class="center-create">
+            <label for="">ULICA</label>
+                        {{form.street}}
+                        {{form.street.errors}}
+            </div>
+            <div class="center-create">
+            <label for="">Kod Pocztowy</label>
+                        {{form.zip}}
+                        {{form.zip.errors}}
+            </div>
+            <div class="center-create">
+            <label for="">Miasto</label>
+                        {{form.city}}
+                        {{form.city.errors}}
+            </div>
+        </div>
+        <div class="center-create">
+        <label for="">Oświadczenie</label>
+                    {{form.statement}}
+                    {{form.statement.errors}}
+        </div>
+        <div class="center-create">
+        <label for="">Do zapłaty</label>
+                    {{form.cost}}
+                    {{form.cost.errors}}
+        </div>
+        <div class="center-create">
+        <label for="">Komentarz</label>
+                    {{form.comments}}
+                    {{form.comments.errors}}
+        </div>
+        <div class="center-create">
+        <label for="">Zgoda</label>
+                    {{form.agreement}}
+                    {{form.agreement.errors}}
+        </div>
+        <div class="center-create">
+        <label for="">Wysłany Email</label>
+                    {{form.sent}}
+                    {{form.sent.errors}}
+        </div>
+        
+        
+        <div class ="text-center"              
+                <p><input class="btn btn-sm btn-primary " type='submit' value='Yes' />  <a href="{% url 'ListaSzkolenUsersView' username=user.username szkolenie=szkolenie_cont%}">Cancel</a></p>
+        </div>
+
+</form>
+
+{% endblock panel %}
+{% block java %}
+<script >
+    var selectinvoice = document.getElementById("id_invoice");
+
+    selectinvoice.setAttribute('onchange',"onCheckboxChanged(this.checked);")
+
+</script>
+<script type="text/javascript" src={% static "js/formularz.js" %}></script>
+
+
+
+{% endblock java %}

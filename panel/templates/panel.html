@@ -1,0 +1,181 @@
+{% extends 'basePanel.html' %}
+{% load static %}
+{% block nav %}
+    <i class="fa fa-bars" id="btn"></i>
+{% endblock nav %}
+{% block content %}
+<div class="page-container">
+    <div class="sidebar">
+        <a href="{% url 'formularz' %}" class="sidebar-brand">
+        <i class="gi gi-leaf" ></i>
+        FORMULARZ</a>
+        <li>
+            <a href="#" class="sidebar-nav-menu"><i class="gi gi-table sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Szkolenia</span><i class="fa fa-angle-left sidebar-nav-indicator sidebar-nav-mini-hide"></i></a>
+                <ul  class="sidebar_ul">
+                    <li>
+                        <a href="{% url 'ListaSzkolenView' username=user.username szkolenie="szkolenie"%}">lista Szkoleń</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'Create_szkolenie_view' username=user.username  szkolenie="szkolenie" %}">Dodaj szkolenie</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'ListaSzkolenView' username=user.username szkolenie="archiwum" %}">ARCHIWUM</a>
+                    </li>
+                
+                </ul>
+            
+        </li>
+         <li>
+            <a href="#" class="sidebar-nav-menu"><i class="gi gi-user sidebar-nav-icon"></i><span class="sidebar-nav-mini-hide">Użytkownicy</span><i class="fa fa-angle-left sidebar-nav-indicator sidebar-nav-mini-hide"></i></a>
+                <ul  class="sidebar_ul">
+                    <li>
+                        <a href="{% url 'ListaUserView' user.username %}">lista Użytkowników</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'Create_User_view' user.username %}">Dodaj Użytkownika</a>
+                    </li>
+                
+                </ul>
+            
+        </li>
+
+        <a href="{% url 'MessageList' user.username %}" class="sidebar-brand" ><i class="gi gi-envelope "></i>Wiadomość</a>
+
+        <a href="{% url 'ListaSzkolenUsersView' username=user.username  szkolenie="bez" %}" class="sidebar-brand" style="display: flex;">
+        <i class="gi gi-leaf" style="margin: 25px 10% 0px 10%;"></i>
+        Uczestnicy szkoleń
+        </a>
+
+        
+    </div>
+    <div class="main-container">
+        <form method = "GET" action="{% url 'Panel' username=user.username %}">
+        {% csrf_token %}
+        <div class="search">
+            
+            <input id="search_id" name = "search_id" type="text" placeholder="Szukaj" >
+            <button type="submit" id="searchButton" > <i class="fa fa-search"></i></button>
+        </div>
+        
+        </form>
+        {% if search  %}
+        
+        <div class="table-responsive">
+        <table id="" class="table table-vcenter table-condensed table-bordered">
+            <thead>
+                <tr>
+
+                    <th class="text-center">
+                        <div class="table-filter">
+
+                                <span>Szkolenie</span> 
+
+                        </div>
+                    </th>
+                    <th class="text-center">
+                        <div class="table-filter">
+                            <span>Imię</span> 
+                        </div>
+                    </th>
+                    <th class="text-center">
+                        <div class="table-filter">
+                                <span>Nazwisko</span> 
+                        </div>
+                    
+                    </th>
+                    <th class="text-center">
+                        <div class="table-filter">
+
+                                <span>Email</span> 
+
+                        </div>
+                    </th>
+                    <th class="text-center"> Numer telefonu</th>
+
+                    <th class="text-center">Miasto</th>
+                    <th class="text-center">Nazwa firmy</th>
+                    <th class="text-center">Email wysłany</th>
+
+                </tr>
+            </thead>
+            
+            <tbody>
+
+                {% for i in search %}
+                <tr>
+
+                    <td class="text-center" name = "editszkolenie" >{{i.NewTraining}}</td>
+                    <td class="text-center" name = "editszkolenie" >{{i.name_user}}</td>
+                    <td class="text-center" name = "editszkolenie" >{{i.subname}}</td>
+                    <td class="text-center" name = "editszkolenie" >{{i.email_user}}</td>
+                    <td class="text-center" name = "editszkolenie" >{{i.phoneNumber}}</td>
+                    <td class="text-center" name = "editszkolenie" >{{i.city}}</td>
+                    <td class="text-center" name = "editszkolenie" >{{i.name_company}}</td>
+                    
+                    <td class="text-center"> 
+                        {% for mes in send %}
+                            {% ifequal i mes.neme_user_send%}
+                            <p style="margin-bottom:0;background-color:green;color:white"> {{mes.name_message_send}}</p>
+                            
+                            {% endifequal %}
+
+
+                            
+                        {% endfor %}
+                    
+                    </td>
+
+                  
+                </tr>
+                {% endfor %}
+         
+                
+            <tbody>
+        
+        {% elif  search == False%}
+            <p>brak wyników</p>
+        {% else %}
+        
+        {% endif %}
+        
+ 
+        
+         {% block panel %}
+        {% endblock panel %}
+        
+    </div>
+
+   
+
+
+</div>
+
+
+{% endblock content %}
+
+{% block extra_js %}
+    <script>
+    $(function() {
+        $(".sidebar-nav-menu").on('click', function() {
+            $(this).next("ul").toggleClass( "active" );
+            $(this).toggleClass( "active" )
+
+        });
+    });
+    
+    var btn = document.querySelector("#btn");
+    var sidebar = document.querySelector(".sidebar");
+    var main_container = document.querySelector(".main-container");
+    
+    btn.addEventListener("click", () => {
+    sidebar.classList.toggle("active");
+    main_container.classList.toggle("active");
+    })
+
+ 
+
+    </script>
+    {% block java %}
+    {% endblock java %}
+
+{% endblock extra_js %}

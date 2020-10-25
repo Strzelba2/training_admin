@@ -1,0 +1,42 @@
+{% extends 'panel.html' %}
+{% load static %}
+
+
+{% block panel %}
+    <h1> Welcome To GeeksforGeeks</h1> 
+  
+    
+    <h3 id="head3">header element</h3> 
+  
+    <p>Click the button to insert  
+      div element after the header element</p> 
+  
+    <button onclick="insadjele()">Insert element</button> 
+
+
+{% endblock panel %}
+{% block java %}
+
+<script>
+var images = [].slice.apply(document.getElementById('richTextField').contentWindow.document.getElementsByTagName(img), null);
+
+for (var x in images_before){
+                    console.log(images_before[x]);
+                    if(images.includes(images_before[x])){
+                        console.log("zawiera");
+                    }else{
+                        var input_to_remove=document.getElementById(images_before[x]);
+
+                        input_to_remove.remove();
+                        idCount -= 1
+                    }
+                }
+ function insadjele() { 
+            var s = document.createElement("div"); 
+            var h = document.getElementById("head3"); 
+            s.setAttribute("name","image")
+            s.setAttribute("class","image")
+            h.insertAdjacentElement("afterend", s); 
+        } 
+</script>
+{% endblock java %}

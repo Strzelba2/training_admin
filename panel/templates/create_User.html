@@ -1,0 +1,123 @@
+{% extends 'panel.html' %}
+{% load static %}
+
+
+{% block panel %}
+
+
+<form method="post" action='{% url "Create_User_view" user.username %}' enctype="multipart/form-data" id="form-login" class="form-horizontal form-bordered form-control-borderless" >
+    {% csrf_token %}
+    <div class="container" style="margin-left: 2%;margin-top: 3%">
+    {{form.non_field_errors}}
+    </div>
+    <div class="form-group">
+    <div class="col-xs-12">
+        <div class="input-group">
+            <span class="input-group-addon"><i class="gi gi-envelope"></i></span>
+            {{form.email}}
+            {{form.email.errors}}
+        </div>
+    </div>
+    </div>
+    <div class="form-group">
+    <div class="col-xs-12">
+        <div class="input-group">
+            <span class="input-group-addon"><i class="gi gi-pencil"></i></span>
+            {{form.username}}
+            {{form.username.errors}}
+        </div>
+    </div>
+    </div>
+
+
+    <div class="form-group">
+    <div class="col-xs-12">
+        <div class="input-group">
+            <span class="input-group-addon"><i class="gi gi-user"></i></span>
+            {{form.full_name}}
+            {{form.full_name.errors}}
+        </div>
+    </div>
+    </div>
+    
+    <div class="form-group">
+    <div class="col-xs-12">
+        <div class="input-group">
+        
+        {{form.image_path}}
+        {% if  form.image_path.value is  None  %}
+            <span class="input-group-addon"><i class="gi gi-picture"></i></span>
+            <img id="blah"  class="imagefile" width="100" height="100" /> 
+
+            {{form.image}}
+            {{form.image.errors}}
+            <label class="picture" for="inpFile">Wybież zdjęcie</label>
+  
+            
+        {% elif form.image_path.value == ""  %}
+
+            <span class="input-group-addon"><i class="gi gi-picture"></i></span>
+            <img id="blah" class="imagefile"   width="100" height="100" /> 
+            
+            
+            {{form.image}}
+            {{form.image.errors}}
+            <label class="picture" for="inpFile">Wybież zdjęcie</label>
+        
+        {% else %}
+           <img id="blah" src='/media/{{form.image_path.value}}'  width="100" height="100" /> 
+            
+        {% endif %}
+
+        </div>
+    </div>
+    </div>
+
+    
+    <div class="form-group">
+    <div class="col-xs-12">
+        <div class="input-group">
+            <span class="input-group-addon"><i class="gi gi-lock"></i></span>
+            {{form.password1}}
+            {{form.password1.errors}}
+        </div>
+    </div>
+    </div>
+    <div class="form-group">
+    <div class="col-xs-12">
+        <div class="input-group">
+            <span class="input-group-addon"><i class="gi gi-lock"></i></span>
+            {{form.password2}}
+            {{form.password2.errors}}
+        </div>
+    </div>
+    </div>
+    <div class="form-group form-actions" style="margin: 0 5% 0 5%;">
+
+
+        <div class="col-xs-12 text-center">
+            <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-angle-right"></i> Zarejestruj się</button>
+             <a href="{% url 'ListaUserView' user.username %}">Cancel</a>
+        </div>
+    </div>
+</form>
+{% endblock panel %}
+{% block java %}
+
+<script>
+    const imagefile = document.querySelector(".imagefile");
+    const inpFile = document.getElementById("inpFile")
+    const picture = document.querySelector(".picture");
+    
+    inpFile.addEventListener("change",function(){  
+    
+    imagefile.style.display = "block";
+    picture.style.margin = " 20px 5% 20px 5% "
+    
+    })
+    
+    
+
+</script>
+
+{% endblock java %}

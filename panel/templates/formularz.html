@@ -1,0 +1,157 @@
+{% extends 'basePanel.html' %}
+{% load static %}
+{% block nav %}
+	{% if request.user.is_authenticated %}
+		<a class="right-topbar-item " href="{% url 'Panel' username=user.username%}">Panel</a>
+	{% endif %}
+{% endblock nav %}
+{% block content %}
+<div id="logo-container">
+        <img src="{% static 'img/sbplogo_1.png' %}" >
+</div>
+
+<form method="POST" action='.'>
+	{% csrf_token %}
+
+	<div class="training-container" id="anime-block">
+		<h1>Formularz zgłoszeniowy</h1>
+		
+		<label for="id_NewTraining">Wybierz szkolenie:</label>
+		{{form.NewTraining}}
+
+		<h4 id = "result"></h4>
+	</div>
+	<div class="training-container">
+		<h1>Dene Użytkownika</h1>
+		<label for="id_name">Imię</label>
+		{{form.name_user}}
+		{{form.name_user.errors}}
+		<label for="id_subname">Nazwisko</label>
+		{{form.subname}}
+		{{form.subname.errors}}
+		<label for="id_email">Email</label>
+		{{form.email_user}}
+		{{form.email_user.errors}}
+		<label for="id_phoneNumber">Numer telefonu</label>
+		{{form.phoneNumber}}
+		{{form.phoneNumber.errors}}
+		<label for="id_adress">Adres</label>
+		{{form.adress}}
+		{{form.adress.errors}}
+	</div>
+	<div class="training-container">
+		<h1>Faktura</h1>
+		<div class="flexview">
+			{{form.invoice}}
+			<label for="id_invoice"> &nbsp; Proszę o wystawienie faktury  </label>
+			{{form.invoice.errors}}
+		</div>
+
+	</div>
+	<div class="training-container" id="HiddenCompany" style="display:none;"><br clear="all">
+		<h1>Dene Firmy</h1>
+		<label for="id_name_company">Nazwa firmy</label>
+		{{form.name_company}}
+		{{form.name_company.errors}}
+		<label for="id_full_name">Imię Nazwisko</label>
+		{{form.full_name_company}}
+		<label for="id_NIP">NIP</label>
+		{{form.NIP}}
+		{{form.NIP.errors}}
+		<label for="id_street">Ulica</label>
+		{{form.street}}
+		<label for="id_zip">Kod pocztowy</label>
+		{{form.zip}}
+		{{form.street.errors}}
+		<label for="id_city">Miejscowość</label>
+		{{form.city}}
+		{{form.city.errors}}
+		
+	</div>
+	<div class="training-container">
+		<h1>Zwolnienie z podatku VAT</h1>
+		<div class="flexview">
+			{{form.statement}}
+			{{form.statement.errors}}
+			<label for="id_statement">„Oświadczam, że zakupiona usługa szkoleniowa mająca charakter usługi kształcenia/przekwalifikowania zawodowego, jest finansowana ze środków publicznych w całości zgodnie z treścią art. 43 ust. 1 pkt 29 lit. c ustawy z dnia 11.03.2004 o podatku od towarów i usług (Dz. U. Nr 54, poz. 535 ze zm.) / w co najmniej 70%, zgodnie z treścią § 13 ust. 1 pkt 20 rozporządzenia Ministra Finansów z dnia 04.04.2011 r. w sprawie wykonania niektórych przepisów ustawy o podatku od towarów i usług (Dz. U. Nr 73 poz. 392). W związku z tym proszę o wystawienie faktury VAT ze zwolnioną stawką podatku.”:</label>
+		</div>
+		<div id = "zvat" style="display:none;">
+			<div class="flexview">
+				<input type="radio" name="cost" id="id_cost"  step="0.01"value="221.40">
+				<label for="id_cost">koszt 221,40 zł</label></br>
+			</div>
+			<div class="flexview">
+				<input type="radio" name="cost" id="id_cost"  step="0.01"value="199.26">
+				<label for="id_cost">koszt 199,26 zł Dla członków SBP W ramach programu lojalnościowego, członkom SBP przysługuje zniżka o 10%</label>
+			</div>
+		</div>
+		<div id = "bezvat" style="display:block;">
+			<div class="flexview">
+				<input type="radio" name="cost" id="id_cost" step="0.01"value="180">
+				<label for="id_cost">koszt 180,00 zł</label></br>
+			</div>
+			<div class="flexview">
+				<input type="radio" name="cost" id="id_cost" step="0.01" value="162">
+				<label for="id_cost">koszt 162,00 zł Dla członków SBP W ramach programu lojalnościowego, członkom SBP przysługuje zniżka o 10%</label>
+			</div>
+		</div>
+	</div>
+	<div class="training-container">
+		<h1>Wpłata za uczestnictwo</h1>
+		<label >Wpłaty należy dokonać na konto:
+
+		Stowarzyszenia Bibliotekarzy Polskich – Zarząd Główny
+		ul. Konopczyńskiego 5/7, 00-335 Warszawa,
+		Bank: Credit Agricole Bank Polska S.A.
+		Numer Konta: 46 1940 1076 3122 4176 0000 0000
+
+		W tytule przelewu proszę podać nazwę wydarzenia i nazwisko uczestnika
+		Opłaty prosimy dokonać do dnia 2020-04-09
+		</label>
+
+	</div>
+	<div class="training-container">
+		<h1>Uwagi</h1>
+		<label for="id_comments">Komentarz</label>
+		{{form.comments}}
+		{{form.comments.errors}}
+	</div>
+	<div class="training-container">
+		<div class="flexview">
+			{{form.agreement}}
+			<label for="id_agreement">Zgadzam się na przetwarzanie moich danych osobowych przez Stowarzyszenie Bibliotekarzy Polskich Zarząd Główny zgodnie z ustawą o Ochronie Danych Osobowych z 10 maja 2018 r. Dz. Ust. 2018 poz. 1000., w celach związanych z organizacją konferencji. :</label>
+			
+			{{form.agreement.errors}}
+		</div>
+	</div>
+	
+	<div class="form-group form-actions">
+
+		<div class="col-xs-12 text-center">
+			<button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-angle-right"></i> Wyślij formularz</button>
+		</div>
+	</div>
+	
+</form>
+{% endblock content %}
+{% block extra_js %}
+	<script type="text/javascript">
+	function getSelectValue() {
+		var selectTraining = document.getElementById("id_NewTraining").value;
+		var dateTrain = {};
+		{% for  i in data_training  %}
+				dateTrain["{{i.id}}"]="{{i.DateTraining|date}}";
+		{% endfor %};
+		if(selectTraining !=""){
+		document.getElementById('result').innerHTML = "Termin szkolenia  :  "+dateTrain[selectTraining];
+		}else {document.getElementById('result').innerHTML = "Proszę wybrać szkolenie"
+		}
+	}
+
+	</script>
+
+	<script type="text/javascript" src={% static "js/formularz.js" %}></script>
+{% endblock extra_js %}
+
+
+
